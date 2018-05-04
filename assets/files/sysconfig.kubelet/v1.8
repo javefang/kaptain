@@ -1,0 +1,16 @@
+KUBELET_OPTS_KAPTAIN="\
+--allow-privileged=true \
+--cert-dir=/var/lib/kubelet \
+--cgroup-driver=systemd \
+--cluster-dns={{ .Spec.DNSClusterIP }} \
+--cluster-domain=cluster.local \
+--cloud-provider={{ .Spec.CloudProvider }} \
+--kubeconfig=/var/lib/kubelet/kubeconfig \
+--kubelet-cgroups=/systemd/system.slice \
+--network-plugin=cni \
+--pod-infra-container-image={{ .Spec.DockerOpts.KubeImageProxy }}/google_containers/pause-amd64:3.0 \
+--pod-manifest-path=/etc/kubernetes/manifests \
+--runtime-cgroups=/systemd/system.slice \
+--serialize-image-pulls=false \
+--v=2 \
+"

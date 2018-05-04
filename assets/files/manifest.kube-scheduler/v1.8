@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-scheduler
+  namespace: kube-system
+  labels:
+    k8s-app: kube-scheduler
+spec:
+  hostNetwork: true
+  containers:
+  - name: kube-scheduler
+    image: {{ .Spec.DockerOpts.KubeImageProxy }}/google_containers/kube-scheduler:{{ .Spec.KubeVersion }}
+    command:
+    - /usr/local/bin/kube-scheduler
+    - --leader-elect=true
+    - --kubeconfig=/var/lib/kubernetes/kube-scheduler.kubeconfig
+    - --v=2
+    volumeMounts:
+    - mountPath: /var/lib/kubernetes
+      name: kube-master-data
+      readOnly: true
+    - mountPath: /etc/ssl/certs/ca-certificates.crt
+      name: ca-bundle
+      readOnly: true
+  volumes:
+  - name: kube-master-data
+    hostPath:
+      path: /var/lib/kubernetes
+  - name: ca-bundle
+    hostPath:
+      path: /etc/ssl/certs/ca-certificates.crt
+      type: File

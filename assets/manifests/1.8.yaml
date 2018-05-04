@@ -1,0 +1,46 @@
+kind: AssetManifest
+apiVersion: v1
+metadata:
+  name: asset-manifest-1.8
+  labels:
+    k8s-version: 1.8
+spec:
+  files:
+    - name: sysconfig.docker
+      version: v1.12.6
+    - name: sysconfig.kubelet
+      version: v1.8
+    - name: sysconfig.kubelet.master
+      version: v1.8
+    - name: sysconfig.kubelet.worker
+      version: v1.8
+    - name: sysconfig.kube-proxy
+      version: v1.8
+    - name: config.docker-daemon
+      version: v1.12.6
+    - name: config.cloud-config.vsphere
+      version: v1.8
+    - name: manifest.kube-apiserver
+      version: v1.8
+    - name: manifest.kube-controller-manager
+      version: v1.8
+    - name: manifest.kube-scheduler
+      version: v1.8
+  addons:
+    - name: calico
+      version: v2.6.7
+    - name: coredns
+      version: v1.1.1
+    - name: heapster
+      version: v1.4.3
+    - name: node-problem-detector
+      version: v0.4.1
+    - name: rbac-kube-system
+      version: v1.0.0
+    - name: rbac-node-bootstrap
+      version: v1.0.0
+    - name: storageclass.aws
+      version: v1.0.0
+    - name: storageclass.vsphere
+      version: v1.0.0
+

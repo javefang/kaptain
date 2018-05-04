@@ -1,0 +1,13 @@
+{{ with .Spec.VSphereOpts -}}
+[Global]
+        user = {{ .Username }}
+        password = {{ .Password }}
+        server = {{ .Server }}
+        port = 443
+        insecure-flag = "1"
+        datacenter = {{ .DataCenter }}
+        datastore = {{ .DataStore }}
+        working-dir = {{ .WorkingDir }}
+[Disk]
+        scsicontrollertype = pvscsi
+{{ end -}}

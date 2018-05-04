@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: 99-privileged
+spec:
+  privileged: true
+  hostIPC: true
+  hostPID: true
+  hostNetwork: true
+  hostPorts:
+    - min: 0
+      max: 65535
+  volumes:
+    - '*'
+  allowedHostPaths:
+    - pathPrefix: "/"
+  allowedCapabilities:
+    - '*'
+  runAsUser:
+    rule: 'RunAsAny'
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'RunAsAny'
+  fsGroup:
+    rule: 'RunAsAny'
+

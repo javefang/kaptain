@@ -1,0 +1,22 @@
+{{ with .Spec.DockerOpts -}}
+{
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m",
+    "max-file": "2"
+  },
+  {{ with .InsecureRegistries -}}
+  "insecure-registries": [
+    "{{range .}}{{.}}{{end}}"
+  ],
+  {{ end -}}
+  "iptables": false,
+  "ip-masq": false,
+  {{ with .RegistryMirrors -}}
+  "registry-mirrors": [
+    "{{range .}}{{.}}{{end}}"
+  ],
+  {{ end -}}
+  "log-level": "error"
+}
+{{ end -}}

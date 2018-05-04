@@ -1,0 +1,32 @@
+# Allow all service accounts in kube-system namespce to use any policy
+
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: psp-default
+  namespace: kube-system
+rules:
+- apiGroups: ['extensions']
+  resources: ['podsecuritypolicies']
+  verbs: ['use']
+  resourceNames:
+  - 10-basic
+  - 20-persistent
+  - 30-network-daemon
+  - 40-persistent-network-daemon
+  - 99-privileged
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: psp-default
+  namespace: kube-system
+roleRef:
+  kind: Role
+  name: psp-default
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: Group
+  apiGroup: rbac.authorization.k8s.io
+  name: system:serviceaccounts

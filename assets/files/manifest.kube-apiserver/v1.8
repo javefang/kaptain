@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-apiserver
+  namespace: kube-system
+  labels:
+    k8s-app: kube-apiserver
+spec:
+  hostNetwork: true
+  containers:
+  - name: kube-apiserver
+    image: {{ .Spec.DockerOpts.KubeImageProxy }}/google_containers/kube-apiserver:{{ .Spec.KubeVersion }}
+    command:
+    - /usr/local/bin/kube-apiserver
+    - --admission-control=NodeRestriction,NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota,DefaultTolerationSeconds{{if .Spec.PodSecurityPolicyOpts.Enabled}},PodSecurityPolicy{{end}}
+    - --allow-privileged=true
+    - --anonymous-auth=false
+    - --apiserver-count=3
+    - --audit-log-maxage=30
+    - --audit-log-maxbackup=3
+    - --audit-log-maxsize=100
+    - --audit-log-path=/var/lib/audit.log
+    {{ if .Spec.AuthenticationTokenWebhookOpts.ConfigDataBase64 -}}
+    - --authentication-token-webhook-config-file=/var/lib/kubernetes/authn-webhook-config
+    - --authentication-token-webhook-cache-ttl={{ .Spec.AuthenticationTokenWebhookOpts.CacheTTL }}
+    - --runtime-config=authentication.k8s.io/v1beta1=true
+    {{ end -}}
+    - --authorization-mode=Node,RBAC
+    - --bind-address=0.0.0.0
+    - --client-ca-file=/var/lib/kubernetes/ca.pem
+    - --cloud-provider={{ .Spec.CloudProvider }}
+    {{ if .Spec.CloudConfig -}}
+    - --cloud-config={{ .Spec.CloudConfig }}
+    {{ end -}}
+    - --enable-bootstrap-token-auth
+    - --enable-swagger-ui=true
+    - --etcd-cafile=/var/lib/kubernetes/etcd-ca.pem
+    - --etcd-certfile=/var/lib/kubernetes/etcd-client.pem
+    - --etcd-keyfile=/var/lib/kubernetes/etcd-client-key.pem
+    - --etcd-servers={{range $index, $element := .Spec.EtcdCluster.Members}}{{if $index}},{{end}}https://{{$element.Hostname}}:2379{{end}}
+    - --event-ttl=1h
+    - --insecure-bind-address=127.0.0.1
+    - --insecure-port=8080
+    - --kubelet-https=true
+    - --secure-port={{ .Spec.MasterPort }}
+    - --service-account-key-file=/var/lib/kubernetes/ca-key.pem
+    - --service-cluster-ip-range={{ .Spec.ServiceCIDR }}
+    - --service-node-port-range=30000-32767
+    - --tls-cert-file=/var/lib/kubernetes/kubernetes.pem
+    - --tls-private-key-file=/var/lib/kubernetes/kubernetes-key.pem
+    - --token-auth-file=/var/lib/kubernetes/token.csv
+    - --v=2
+    livenessProbe:
+      httpGet:
+        host: 127.0.0.1
+        path: /healthz
+        port: 8080
+      initialDelaySeconds: 15
+      timeoutSeconds: 15
+    ports:
+    - name: https
+      containerPort: {{ .Spec.MasterPort }}
+      hostPort: {{ .Spec.MasterPort }}
+    - name: local
+      containerPort: 8080
+      hostPort: 8080
+    volumeMounts:
+    - mountPath: /var/lib/kubernetes
+      name: kube-master-data
+      readOnly: true
+    - mountPath: /etc/ssl/certs/ca-certificates.crt
+      name: ca-bundle
+      readOnly: true
+  volumes:
+  - name: kube-master-data
+    hostPath:
+      path: /var/lib/kubernetes
+  - name: ca-bundle
+    hostPath:
+      path: /etc/ssl/certs/ca-certificates.crt
+      type: File

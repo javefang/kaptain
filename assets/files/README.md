@@ -1,0 +1,1 @@
+This folder contains versioned templates for generating config files on the node.

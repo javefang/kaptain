@@ -1,0 +1,6 @@
+KUBE_PROXY_OPTS_KAPTAIN="\
+--cluster-cidr={{ .Spec.PodCIDR }} \
+--kubeconfig=/var/lib/kube-proxy/kubeconfig \
+--proxy-mode=iptables \
+--v=2 \
+"

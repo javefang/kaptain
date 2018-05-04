@@ -1,0 +1,4 @@
+KUBELET_OPTS_KAPTAIN_EXTRA="\
+--bootstrap-kubeconfig=/var/lib/kubelet/bootstrap.kubeconfig \
+--cloud-config={{ .Spec.WorkerCloudConfig }} \
+"

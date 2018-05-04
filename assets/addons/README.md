@@ -1,0 +1,1 @@
+This folder contains versioned template files for generating essential Kubernetes addons for cluster bootstrap.

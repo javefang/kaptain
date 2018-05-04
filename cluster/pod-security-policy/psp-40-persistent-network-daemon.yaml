@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: 40-persistent-network-daemon
+spec:
+  privileged: false
+  hostIPC: false
+  hostPID: false
+  hostNetwork: false
+  hostPorts:
+    - min: 0
+      max: 65535
+  volumes:
+    - secret
+    - configMap
+    - emptyDir
+    - downwardAPI
+    - projected
+    - nfs
+    - persistentVolumeClaim
+  runAsUser:
+    rule: 'RunAsAny'
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'RunAsAny'
+  fsGroup:
+    rule: 'RunAsAny'
+
