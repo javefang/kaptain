@@ -30,9 +30,9 @@ var exportConfigCmd = &cobra.Command{
 	Short: "Export kubeconfig for accessing a cluster",
 	Long: `Export credentials of a specific user for accessing a cluster.
 For example, the following command will export the credential of user
-'viewer' on cluster 'dev.test.waws'
+'viewer' on cluster 'dev.example.com'
 
-$ kaptain export-config --name=dev.test.waws --user=admin
+$ kaptain export-config --name=dev.example.com --user=admin
 
 By default, the config is exported to '~/.kube/config'. If the target file
 already exists, Kaptain will merge in the new config and set the context.

@@ -34,7 +34,7 @@ This command perform the following:
 - Configure limit-range
 - Install Heapster
 
-$ kaptain bootstrap -n dev.test.waws
+$ kaptain bootstrap -n dev.example.com
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		flagset := cmd.Flags()

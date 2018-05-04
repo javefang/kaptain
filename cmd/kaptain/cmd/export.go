@@ -32,10 +32,10 @@ var exportCmd = &cobra.Command{
 	Short: "Export a cluster spec to a file",
 	Long: `Export a cluster spec to a file.
 	
-	Foe example, to export all cluster spec for cluster 'dev.test.waws' to a file 
+	Foe example, to export all cluster spec for cluster 'dev.example.com' to a file 
 	'cluster.yaml' on local disk:
 	
-	$ kaptain export -n dev.test.waws > cluster.yaml
+	$ kaptain export -n dev.example.com > cluster.yaml
 	
 	This file contains all cluster spec, PKIs, token secrets and file/addon manifests.
 	You can keep it in version control, edit it and recreate a cluster later.

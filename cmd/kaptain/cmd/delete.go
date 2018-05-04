@@ -30,7 +30,7 @@ var deleteCmd = &cobra.Command{
 This will delete the cluster spec from the registry. 
 The operation cannot be undone.	
 
-$ kaptain delete -n dev.test.waws
+$ kaptain delete -n dev.example.com
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		flagset := cmd.Flags()
